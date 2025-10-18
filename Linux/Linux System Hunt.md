@@ -7,11 +7,14 @@ A potential compromise on a Linux developer server after suspicious Slack activi
 ## Summary
 The threat actor gained initial access to the server via FTP and established persistence using a cron job that periodically downloaded and executed a malicious shell script. Further analysis revealed the use of a PHP web shell for remote command execution.
 
-## Commands Run
-- journalctl | grep -i "ftp" | grep -i "success"  to check for successful FTP authentications
-- journalctl | grep -i /tmp to check for changes to the /tmp directory
-- find / -newermt "3 Sept 2021 06:00:03" ! -newermt "3 Sept 2021 06:01:47" 2>/dev/null to find modified files between within the timefram
-- journalctl | grep ftpadam | grep "110\.44\.125\.139" to search for all activities belonging to ftpadam (account logged into by the threat actor) and determine their activity
+### Commands Executed
+
+| Purpose | Command |
+|---|---|
+| Identify successful FTP authentications | `journalctl \| grep -i "ftp" \| grep -i "success"` |
+| Inspect `/tmp` activity | `journalctl \| grep -i /tmp` |
+| Find files modified within time window | `find / -newermt "3 Sept 2021 06:00:03" ! -newermt "3 Sept 2021 06:01:47" 2>/dev/null` |
+| Review activity for account `ftpadam` | `journalctl \| grep ftpadam \| grep "110.44.125.139"` |
 
 ## Findings (timeline)
 
@@ -56,6 +59,7 @@ The attacker’s last observed activity occurred at Sept 3, 2021 – 09:25:25.
 - Block ip `110.44.125.139` at the firewall level
 - Remove the cron jobs created by the actor
 - Remove malicious PHP web shell
+- Install an IDS/IPS for future monitoring
 
 
 ## MITRE ATT&CK Mapping
