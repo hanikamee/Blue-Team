@@ -13,16 +13,16 @@ I converted the supplied PCAP into Zeek logs, imported them into RITA, and analy
 
   - 192.168.29.67 — made long-duration connections to 192.168.29.147 on ports 7070/TCP, 3389/TCP, 3389/UDP, and 58199/TCP.
 
-![Internal Beaconing](Internal_Beaconing.png)
+![Internal Beaconing](./images/Internal_Beaconing.png)
 
-![long connection](long_connection.png)
+![long connection](./images/long_connection.png)
 
 - A high-entropy domain was observed in RITA's DNS tab:
 `iuqssfsodp9ifjaposdfjhgosurijfaewrwergwea.com`
 
 
 - HTTP traffic was observed as the application protocol, but on port 3389 (HTTP-over-nonstandard-port / port masquerading).
-![RDP](RDP_port.png) 
+![RDP](./images/RDP_port.png) 
 
 - HTTP requests from the client used the WinHTTP user-agent:
 `Mozilla/4.0 (compatible; Win32; WinHttp.WinHttpRequest.5)`; typical of automated C2 clients.
