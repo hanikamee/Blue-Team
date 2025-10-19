@@ -23,7 +23,7 @@ The threat actor gained initial access to the server via FTP and established per
 - Method: FTP login using account ftpadam
 - Source IP: 110.44.125.139
 - Evidence of successful FTP authentication confirming external access to the system.
-![FTP](FTP.png)  
+![FTP](./images/FTP.png)  
 
 ### Persistence
 - Timestamp: Sept 5, 2021 – 00:00:01
@@ -32,8 +32,8 @@ The threat actor gained initial access to the server via FTP and established per
 
 
 - A weekly cron job was also created to automatically download and execute the same remote script as root, ensuring continuous persistence.
-![Shell Script](Shell_Script.png)
-![Cron Job](Cron_Job.png)      
+![Shell Script](./images/Shell_Script.png)
+![Cron Job](./images/Cron_Job.png)      
 
 ### Remote code execution via web shell
 A PHP file was found, the snippet in the screenshot below checks whether an HTTP parameter named z was provided (\$_REQUEST["z"]). If so, it prints a "pre" tag, assigns the parameter to \$z, and calls system(\$z). system() executes the string as a shell command on the server and returns output. *die* ends script execution after running the command. An attacker can send `http://victim/shell.php?z=whoami` (or other commands) and have the server run arbitrary shell commands as the web server user
@@ -51,7 +51,7 @@ if(isset($_REQUEST["z"])) {
 
 ### Last Activity
 The attacker’s last observed activity occurred at Sept 3, 2021 – 09:25:25.
-![Last Activity](last_activity.png) 
+![Last Activity](./images/last_activity.png)   
 
 
 ## Mitigation Recommendations
