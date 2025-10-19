@@ -59,10 +59,43 @@ The attacker’s last observed activity occurred at Sept 3, 2021 – 09:25:25.
 - Block ip `110.44.125.139` at the firewall level
 - Remove the cron jobs created by the actor
 - Remove malicious PHP web shell
-- Install an IDS/IPS for future monitoring
+- Install an IDS/IPS on the machine for future monitoring
+- Patch or disable legacy FTP; if file transfer is required, use SFTP/FTPS and enforce strong authentication.
+- Search other hosts for the same IOCs and conduct lateral-movement triage.
+
+1. **Isolate the host**
+   - Remove network access (or block egress) immediately to prevent further communication with attacker infrastructure.
+
+2. **Block IOCs**
+   - Block IP `110.44.125.139` and related domains (e.g., `crest.tt`) at the firewall and proxy level.
+   - Add domain/IP/file-hash IOCs to IDS/IPS rules and endpoint detection lists.
+
+3. **Reimage the host**
+
+4. **Credential rotation & access hardening**
+   - Rotate all credentials used on the host (service accounts, SSH keys, API tokens) and invalidate sessions for compromised accounts (e.g., `ftpadam`).
+   - Enforce MFA where possible and tighten access control (limit who can create cron entries / upload files).
+
+5. **Post‑reimage validation & monitoring**
+   - Deploy monitoring agents (EDR/agent and Zeek/Suricata) and centralize logs to the SIEM.
+   - Apply detection rules tuned to the indicators observed (wget/curl from /tmp, new root cron entries, web shell patterns).
+   - Monitor the network for any signs of the attacker attempting to re-contact the environment.
+
+6. **Environment-wide hunt**
+   - Search other hosts for the same IOCs (domain, IP, file hashes, suspicious cron entries).
+   - Check authentication logs for lateral movement attempts or reused credentials.
+
+7. **Remediation follow-ups**
+   - Patch or replace legacy services (disable FTP or replace with SFTP/FTPS), and harden web applications to prevent file uploads or RCE.
+   - Conduct a post-incident review to update playbooks and detection rules.
 
 
 ## MITRE ATT&CK Mapping
-- T1133 (initial access via remote services)
-- T1053.003 (Persistence via Scheduled Task/Job)
+
+| Tactic         | Technique                         | ID            |
+| -------------- | --------------------------------- | ------------- |
+| Initial Access | Exploit via Remote Services (FTP) | **T1133**     |
+| Persistence    | Scheduled Task/Job (Cron)         | **T1053.003** |
+| Execution      | Command Execution via Web Shell   | **T1505.003** |
+
 
