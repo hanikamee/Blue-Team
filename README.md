@@ -23,7 +23,7 @@ Each folder contains:
 - More Blue Team lab writeups!
 
 
-⚖️ Disclaimer
+## ⚖️ Disclaimer
 
 - This writeup was created solely for educational and research purposes as part of a hands-on cybersecurity lab. All analysis, screenshots, and findings are based on a controlled lab environment using publicly available tools and datasets.
 - No proprietary or confidential material from any organization is reproduced or redistributed.
