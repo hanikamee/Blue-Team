@@ -55,13 +55,6 @@ The attacker’s last observed activity occurred at Sept 3, 2021 – 09:25:25.
 
 
 ## Mitigation Recommendations
-- Rotate all service passwords and kill sessions for user account `ftpadam`
-- Block ip `110.44.125.139` at the firewall level
-- Remove the cron jobs created by the actor
-- Remove malicious PHP web shell
-- Install an IDS/IPS on the machine for future monitoring
-- Patch or disable legacy FTP; if file transfer is required, use SFTP/FTPS and enforce strong authentication.
-- Search other hosts for the same IOCs and conduct lateral-movement triage.
 
 1. **Isolate the host**
    - Remove network access (or block egress) immediately to prevent further communication with attacker infrastructure.
