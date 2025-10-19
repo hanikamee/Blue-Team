@@ -27,5 +27,4 @@ I converted the supplied PCAP into Zeek logs, imported them into RITA, and analy
 - HTTP requests from the client used the WinHTTP user-agent:
 `Mozilla/4.0 (compatible; Win32; WinHttp.WinHttpRequest.5)`; typical of automated C2 clients.
 
-![C2 protocol](C2_protocol.png)
 
