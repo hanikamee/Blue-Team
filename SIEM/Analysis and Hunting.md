@@ -21,4 +21,16 @@ Searching for the DNS logs, counting the numbers of hosts, and sorting in an asc
 ![Questionable Domain](Questionable_Domain.png)  
 
 
+4) Query: `index=botsv1 earliest=0 sourcetype=stream:dns hostname{} = *.ru|  stats count by hostname{}`
 
+Searching for the number of Russian domains contacted shows **114** in the statistics tab
+
+![Russian Domains](Russian_Domains.png)  
+
+
+5) Query: `index=botsv1 earliest=0 sourcetype=stream:dns hostname{} = *.ru`
+
+
+searching for the IPs that made the connections to the Russian domains shows 2 private IPs: **192.168.250.100**, **192.168.250.20**
+
+![private IPs](Private_IPs.png) 
