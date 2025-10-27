@@ -31,6 +31,17 @@ Searching for the number of Russian domains contacted shows **114** in the stati
 5) Query: `index=botsv1 earliest=0 sourcetype=stream:dns hostname{} = *.ru`
 
 
-searching for the IPs that made the connections to the Russian domains shows 2 private IPs: **192.168.250.100**, **192.168.250.20**
+Searching for the IPs that made the connections to the Russian domains shows 2 private IPs: **192.168.250.100**, **192.168.250.20**
 
 ![private IPs](Private_IPs.png) 
+
+6) Query: `index=botsv1 earliest=0 sourcetype=stream:dns | stats  count by dest_port`
+
+Searching for the destination ports associated with the DNS connections yields **121** unique results (120 non DNS port). **Port 137** (**Netbios**) is the highest used port with 86893 events
+
+![Destination_Ports](Destination_Ports.png)
+
+7) Query: `index=botsv1 earliest=0 srccountry=Ukraine action=allowed`
+
+Searching for inbound connection events from Ukraine in the Fortigate sourcetype shows 193 allowed connections with destination port as 80 (http)
+![Ukraine](image-1.png)
