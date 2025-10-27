@@ -44,4 +44,5 @@ Searching for the destination ports associated with the DNS connections yields *
 7) Query: `index=botsv1 earliest=0 srccountry=Ukraine action=allowed`
 
 Searching for inbound connection events from Ukraine in the Fortigate sourcetype shows 193 allowed connections with destination port as 80 (http)
-![Ukraine](image-1.png)
+
+![Ukraine](src_country.png)
