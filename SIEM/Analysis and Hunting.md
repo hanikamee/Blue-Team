@@ -3,16 +3,11 @@ You are stepping into an immature SOC environment as the sole analyst on duty, r
 
 1) Query: `index="botsv1" earliest=0 | stats count by source`
 
-**Suricata** is the IDS being used within the environment
-
-**sysmon** is the advanced logging driver for windows event logs
+This query shows that **Suricata** is the IDS in use within the environment, and **Sysmon** is the advanced logging driver for Windows event logs.
 ![source](source.png) 
 
 2) Query: `index="botsv1" earliest=0 | stats count by host`
-
-Host, **192.168.250.1**, has the highest count of events
-
-wexxxxsrv is the naming convention for the servers
+The host **192.168.250.1** generated the highest number of events. Server naming follows a **wexxxxsrv** convention.
 ![host](host.png) 
 
 3) Query: `index=botsv1 earliest=0 sourcetype=stream:dns | stats count by hostname{}` 
@@ -21,9 +16,9 @@ Searching for the DNS logs, counting the numbers of hosts, and sorting in an asc
 ![Questionable Domain](Questionable_Domain.png)  
 
 
-4) Query: `index=botsv1 earliest=0 sourcetype=stream:dns hostname{} = *.ru|  stats count by hostname{}`
+4) Query: `index=botsv1 earliest=0 sourcetype=stream:dns hostname= *.ru|  stats count by hostname{}`
 
-Searching for the number of Russian domains contacted shows **114** in the statistics tab
+The query identified 114 unique .ru domains contacted within the dataset.
 
 ![Russian Domains](Russian_Domains.png)  
 
@@ -31,18 +26,24 @@ Searching for the number of Russian domains contacted shows **114** in the stati
 5) Query: `index=botsv1 earliest=0 sourcetype=stream:dns hostname{} = *.ru`
 
 
-Searching for the IPs that made the connections to the Russian domains shows 2 private IPs: **192.168.250.100**, **192.168.250.20**
+Filtering for connections to .ru domains shows two internal hosts responsible for these: **192.168.250.100** and **192.168.250.20**.
 
 ![private IPs](Private_IPs.png) 
 
 6) Query: `index=botsv1 earliest=0 sourcetype=stream:dns | stats  count by dest_port`
 
-Searching for the destination ports associated with the DNS connections yields **121** unique results (120 non DNS port). **Port 137** (**Netbios**) is the highest used port with 86893 events
+This query shows **121** unique destination ports used in DNS-related traffic (many non-DNS ports). The highest usage is port **137** (**NetBIOS**) with **86,893** events.
 
 ![Destination_Ports](Destination_Ports.png)
 
 7) Query: `index=botsv1 earliest=0 srccountry=Ukraine action=allowed`
 
-Searching for inbound connection events from Ukraine in the Fortigate sourcetype shows 193 allowed connections with destination port as 80 (http)
+Looking at allowed inbound connections from Ukraine in the FortiGate logs, there were **193** connections, all targeting destination port **80** (**HTTP**).
 
 ![Ukraine](src_country.png)
+
+### Summary
+This initial investigation provided visibility into the network’s DNS activity and potential outbound communications to suspicious domains, including .ru TLDs. Further analysis should focus on the systems 192.168.250.100 and 192.168.250.20, as they exhibit possible indicators of compromise through their external connections.
+
+### MITRE Mapping
+**MITRE ATT&CK:** T1071.004 – Application Layer Protocol: DNS
